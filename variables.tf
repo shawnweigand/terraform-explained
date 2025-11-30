@@ -18,6 +18,31 @@ variable "rg_name" {
   }
 }
 
+variable "project_name" {
+  description = "The name of the project, abbreviated"
+  type = string
+
+  validation {
+    condition = length(var.project_name) == 3
+    error_message = "The project name must be 3 characters long."
+  }
+
+  validation {
+    condition = lower(var.project_name) == var.project_name
+    error_message = "The project name must be in all lower case."
+  }
+}
+
+variable "environment" {
+  description = "The name of the environment"
+  type = string
+
+  validation {
+    condition = contains(["dev", "tst", "prd"], var.environment)
+    error_message = "The environment must be one of 'dev', 'tst', or 'prd'."
+  }
+}
+
 variable "sku" {
     description = "The SKU for the resources"
     type        = string
@@ -29,10 +54,23 @@ variable "sku" {
     }
 }
 
+variable "certificate_permissions" {
+  description = "List of key permissions for the key vault access policy"
+  type        = list(string)
+  validation {
+    condition     = alltrue([for p in var.certificate_permissions : contains(["Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"], p)])
+    error_message = "Certificate permissions must be one of 'Backup', 'Create', 'Delete', 'DeleteIssuers', 'Get', 'GetIssuers', 'Import', 'List', 'ListIssuers', 'ManageContacts', 'ManageIssuers', 'Purge', 'Recover', 'Restore', 'SetIssuers', 'Update'."
+  }
+
+  validation {
+    condition = length(var.certificate_permissions) == length(distinct(var.certificate_permissions))
+    error_message = "Certificate permissions must not contain duplicate values."
+  }
+}
+
 variable "key_permissions" {
   description = "List of key permissions for the key vault access policy"
   type        = list(string)
-
   validation {
     condition     = alltrue([for p in var.key_permissions : contains(["Backup", "Create", "Decrypt", "Delete", "Encrypt", "Get", "Import", "List", "Purge", "Recover", "Restore", "Sign", "UnwrapKey", "Update", "Verify", "WrapKey", "Release", "Rotate", "GetRotationPolicy", "SetRotationPolicy"], p)])
     error_message = "Key permissions must be one of 'Backup', 'Create', 'Decrypt', 'Delete', 'Encrypt', 'Get', 'Import', 'List', 'Purge', 'Recover', 'Restore', 'Sign', 'UnwrapKey', 'Update', 'Verify', 'WrapKey', 'Release', 'Rotate', 'GetRotationPolicy', or 'SetRotationPolicy'."
