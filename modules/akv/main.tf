@@ -20,4 +20,10 @@ resource "azurerm_key_vault" "akv" {
     secret_permissions = var.secret_permissions
     storage_permissions = var.storage_permissions
   }
+
+  lifecycle {
+    ignore_changes = [
+        tags
+    ]  
+  }
 }

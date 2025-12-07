@@ -18,8 +18,15 @@ module "akv" {
   }
 }
 
-resource "azurerm_key_vault_secret" "secret" {
-  name         = "${module.akv.akv.name}-sauce"
+resource "azurerm_key_vault_secret" "secret_1" {
+  name         = "${module.akv.akv.name}-sauce-1"
   value        = "szechuan"
+  key_vault_id = module.akv.akv.id
+}
+
+resource "azurerm_key_vault_secret" "secret_2" {
+  depends_on = [ azurerm_key_vault_secret.secret_1 ]
+  name         = "${module.akv.akv.name}-sauce-2"
+  value        = "mayo"
   key_vault_id = module.akv.akv.id
 }
