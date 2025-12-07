@@ -19,6 +19,9 @@ variables {
     sku             = "standard"
     project_name    = "dem"
     environment     = "dev"
+    cost_center     = "123456"
+    owner           = "owner@example.com"
+    business_unit   = "IT"
     subscription_id = "00000000-0000-0000-0000-000000000000"
     certificate_permissions = ["Get", "List", "Create"]
     key_permissions = ["Get", "List", "Create"]
@@ -37,5 +40,18 @@ run "assert_akv_name" {
     assert {
       condition = strcontains(local.key_vault_name, var.environment) && strcontains(local.key_vault_name, var.project_name)
       error_message = "Key Vault name must contain the 'environment' and 'project name' variables'"
+    }
+}
+
+run "assert_tags" {
+    command = plan
+
+    assert {
+        condition = (contains(keys(local.tags), "Project") &&
+                    contains(keys(local.tags), "Environment") &&
+                    contains(keys(local.tags), "CostCenter") &&
+                    contains(keys(local.tags), "Owner") &&
+                    contains(keys(local.tags), "BusinessUnit"))
+        error_message = "Tags must include Project, Environment, CostCenter, Owner, and BusinessUnit"
     }
 }

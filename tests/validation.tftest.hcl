@@ -19,6 +19,9 @@ variables {
     sku             = "standard"
     project_name    = "dem"
     environment     = "dev"
+    cost_center     = "123456"
+    owner           = "owner@example.com"
+    business_unit   = "IT"
     subscription_id = "00000000-0000-0000-0000-000000000000"
     certificate_permissions = ["Get", "List", "Create"]
     key_permissions = ["Get", "List", "Create"]
@@ -84,6 +87,54 @@ run "validate_environment" {
 
     expect_failures = [ 
         var.environment
+     ]
+}
+
+run "validate_cost_center_length" {
+    command = plan
+
+    variables {
+        cost_center = "1234567"
+    }
+
+    expect_failures = [ 
+        var.cost_center
+     ]
+}
+
+run "validate_cost_center_numeric" {
+    command = plan
+
+    variables {
+        cost_center = "ABCDEF"
+    }
+
+    expect_failures = [ 
+        var.cost_center
+     ]
+}
+
+run "validate_owner" {
+    command = plan
+
+    variables {
+        owner = "ownerexample.com"
+    }
+
+    expect_failures = [ 
+        var.owner
+     ]
+}
+
+run "validate_business_unit" {
+    command = plan
+
+    variables {
+        business_unit = "Technology"
+    }
+
+    expect_failures = [ 
+        var.business_unit
      ]
 }
 

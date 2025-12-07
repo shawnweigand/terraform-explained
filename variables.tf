@@ -111,3 +111,38 @@ variable "storage_permissions" {
     error_message = "Storage permissions must not contain duplicate values."
   }
 }
+
+variable "cost_center" {
+  description = "The cost center tag value"
+  type        = string
+
+  validation {
+    condition     = length(var.cost_center) > 0 && length(trimspace(var.cost_center)) <= 6
+    error_message = "The cost center must be between 1 and 6 characters."
+  }
+
+  validation {
+    condition = can(regex("^[0-9]+$", var.cost_center))
+    error_message = "The cost center must only contain numeric characters."
+  }
+}
+
+variable "owner" {
+  description = "The owner of the application"
+  type        = string
+
+  validation {
+    condition     = strcontains(var.owner, "@")
+    error_message = "The owner must be a valid email address."
+  }
+}
+
+variable "business_unit" {
+  description = "The business unit tag value"
+  type        = string
+
+  validation {
+    condition     = contains(["Finance", "HR", "IT", "Marketing", "Sales", "Operations"], var.business_unit)
+    error_message = "The business unit must be one of 'Finance', 'HR', 'IT', 'Marketing', 'Sales', or 'Operations'."
+  }
+}
