@@ -22,7 +22,6 @@ variables {
     cost_center     = "123456"
     owner           = "owner@example.com"
     business_unit   = "IT"
-    subscription_id = "00000000-0000-0000-0000-000000000000"
     certificate_permissions = ["Get", "List", "Create"]
     key_permissions = ["Get", "List", "Create"]
     secret_permissions = ["Get", "List", "Set"]
