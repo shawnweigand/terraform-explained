@@ -17,3 +17,9 @@ module "akv" {
     azurerm = azurerm
   }
 }
+
+resource "azurerm_key_vault_secret" "secret" {
+  name         = "${module.akv.akv.name}-sauce"
+  value        = "szechuan"
+  key_vault_id = module.akv.akv.id
+}
