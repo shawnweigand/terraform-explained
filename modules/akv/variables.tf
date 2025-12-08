@@ -1,8 +1,3 @@
-variable "subscription_id" {
-  description = "The subscription ID for the Azure provider"
-  type        = string
-}
-
 variable "rg_name" {
   description = "The name of the resource group"
   type        = string
