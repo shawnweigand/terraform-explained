@@ -7,5 +7,5 @@ owner = "shawn@theshawnshop.com"
 business_unit = "IT"
 certificate_permissions = [ "Get" ]
 key_permissions = [ "Get" ]
-secret_permissions = [ "Get" ]
+secret_permissions = [ "Get", "List", "Set", "Delete" ]
 storage_permissions = [ "Get" ]
